@@ -28,7 +28,7 @@ The strategic BPMN should show how these functions support the wider marketplace
 | **Process payment and commission** | The marketplace submits payment to the simulated payment service. On success, it confirms the order, updates inventory and notifies the relevant producers. It calculates the producer amounts and the network's 5% commission. Declines allow a retry; temporary service failure follows a suitable retry or exception path. | Customer, marketplace, payment service, producers |
 | **Settle producer payments and retain records** | The marketplace distributes producer payments and maintains records for accounting and tax reporting. | Marketplace, producers |
 
-## Sprint 1 modelling notes
+
 
 
 
