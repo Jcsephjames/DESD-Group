@@ -32,3 +32,85 @@ The strategic BPMN should show how these functions support the wider marketplace
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Business and Stakeholder Analysis
+**UFCFTR-30-3 Task 1 – Local Food Multi-Vendor Marketplace**  
+**Sprint 1**
+
+## 1. Enterprise Context
+The enterprise is a multi-vendor online marketplace that enables local food producers to list and sell products directly to customers. Core value streams include product listing and inventory management, multi-vendor ordering and payment (with a 5% marketplace commission), and quality/incident handling. The system must support seasonal availability, organic certification verification, stock integrity, and rapid traceability.
+
+## 2. Key Stakeholders / Actors
+| Actor | Type | Primary Goals | Softgoals / Expectations | Key Dependencies |
+|-------|------|---------------|--------------------------|------------------|
+| **Producer** | Primary user | List products quickly, maintain accurate inventory and seasonal availability, receive orders and payments | Trust in fair commission, simple tools, protection of brand/quality reputation | Marketplace platform, Certification service (if organic) |
+| **Customer** | Primary user | Discover local products, place multi-producer orders reliably, receive safe food | Accurate stock, clear allergen/origin info, timely notifications, fair pricing | Marketplace, Payment service, Producers |
+| **Marketplace Platform / Admin** | System & organisational | Attract producers and customers, enforce rules, calculate commission, ensure food-safety readiness | Scalability, auditability, regulatory compliance, positive reputation | Producers, Customers, External services |
+| **External Organic Certification Service** | External system | Provide reliable verification of organic claims | Availability, accuracy, security of data exchange | Marketplace (on organic claim) |
+| **External Payment Service** | External system | Process payments securely | Reliability, clear success/decline responses | Marketplace, Customer |
+| **Marketplace Operations / Quality Lead** | Internal role | Handle incidents, maintain trust | Rapid response capability, complete traceability records | All other actors |
+
+## 3. Socio-Technical Relationships and Organisational Responsibilities
+- Producers own product data and inventory accuracy; the marketplace owns publication rules, commission calculation, and platform integrity.
+- Customers depend on the marketplace for stock truthfulness and on producers for product quality.
+- External services are treated as potentially unreliable; the system must handle unavailability without losing data or user progress.
+- Softgoals such as “trust”, “transparency of origin/allergens”, and “fairness of commission” influence design decisions (e.g., clear certification status, auditable commission breakdown).
+
+## 4. Major Business Processes (strategic view)
+1. Producer product listing and inventory lifecycle  
+2. Customer multi-vendor order, checkout, payment and fulfilment notification  
+3. Quality incident reporting and customer traceability (supporting process)  
+4. Settlement / commission accounting (supporting)
+
+These processes directly inform the strategic BPMN (high-level pools and message flows) and justify the selection of the two major functionalities for detailed development.
+
+## 5. Legal, Ethical, Social and Professional (LESP) Considerations (high-level)
+- **Legal/Regulatory:** Food labelling (allergens, best-before, origin), data protection (customer and producer data), consumer rights on payment and returns.
+- **Ethical:** Accurate organic claims, transparent commission, fair treatment of small producers.
+- **Social:** Support for local food systems, accessibility of product information.
+- **Professional:** Clear audit trails, responsible handling of quality incidents, honest representation of capabilities in the system.
+
+These considerations will be linked more tightly to specific design decisions in later sprints and the final demonstration.
+
+## 6. Implications for Modelling and Development
+The analysis provides the actor and goal foundation for the forthcoming i* SD and SR models and ensures the strategic BPMN reflects real organisational responsibilities and external dependencies. It also confirms that the two chosen functionalities address the highest-value stakeholder goals while remaining substantial enough for end-to-end Camunda automation.
+
