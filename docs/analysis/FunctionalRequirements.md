@@ -14,26 +14,22 @@ Both chosen functionalities are drawn from **Use Case 1: Producer Product Listin
 2. **Validate and standardise product details**
    - **Priority:** Must have
    - **Acceptance criteria:** The system checks mandatory fields and expected data formats, including valid prices, non-negative quantities and an availability end date that does not precede its start date. Invalid submissions cannot progress, and accepted dates and numeric values are stored in consistent formats.
-3. **Producer updates and edits existing products**
-    - **Priority:** Could have
-    - **Acceptance criteria:** The producer needs to be able to update and edit the exisiting products, if details don't change,no API is called and the original product listing remains the same. The system validates changes before they appear on the marketplace and re-verifies organic certification if its details have changed.
-
-4. **Allow producers to correct missing or invalid product details and resubmit**
+3. **Allow producers to correct missing or invalid product details and resubmit**
    - **Priority:** Must have
    - **Acceptance criteria:** The producer is shown which fields need correction, can amend the submission without re-entering valid details, and can resubmit it for validation.
-5. **Verify claimed certificates**
+4. **Verify claimed certificates**
    - **Priority:** Must have
    - **Acceptance criteria:** When organic certification is claimed, the system submits the certification details to an external or simulated verification service and records the outcome. Products without an organic claim skip this check.
-6. **Handle certification verification service unavailability**
+5. **Handle certification verification service unavailability**
    - **Priority:** Must have
    - **Acceptance criteria:** If the verification service is unavailable, the submission remains unpublished and pending verification, the producer is informed, and verification can be retried without creating a duplicate listing.
-7. **Handle failed certificates**
+6. **Handle failed certificates**
    - **Priority:** Must have
    - **Acceptance criteria:** If certification verification fails, the product remains unpublished and the producer is informed. The producer can correct the certification details or remove the organic claim and resubmit for the applicable validation checks.
-8. **Publish to marketplace**
+7. **Publish to marketplace**
    - **Priority:** Must have
    - **Acceptance criteria:** A product becomes visible to customers only after mandatory information and any claimed organic certification pass validation. Its availability for new orders follows the stock and seasonal availability rules in Functionality 2.
-9. **Marketplace product database** 
+8. **Marketplace product database** 
     - **Priority:** Must have
     - **Acceptance criteria:** An SQL database owned by the marketplace allows producers to add to it  
 
@@ -58,22 +54,31 @@ This functionality combines producer interaction through forms, automated valida
 1. **Allow producers to update stock quantities**
    - **Priority:** Must have
    - **Acceptance criteria:** A producer can update the quantity of their own existing product to a non-negative value. The saved quantity triggers a reassessment of the product’s availability; invalid values are rejected with an explanation.
-2. **Allow producers to create an ASAN (advanced shipping notice)**
+2. **Producer updates and edits existing products**
+    - **Priority:** Could have
+    - **Acceptance criteria:** The producer needs to be able to update and edit the exisiting products, if details don't change,no API is called and the original product listing remains the same. The system validates changes before they appear on the marketplace and re-verifies organic certification if its details have changed. If validation fails the original product remains unchanged.
+
+3. **Allow producers to create an ASAN (advanced shipping notice)**
    - **Priority:** Could have — proposed extension beyond the explicit requirements of Use Case 1
    - **Acceptance criteria:** A producer can record a notice against their own product with an expected replenishment quantity and arrival date. Creating the notice does not increase available stock or make the product available before the stock quantity is actually updated.
-3. **Allow producers to update product information and seasonal availability**
+
+4. **Allow producers to update product information and seasonal availability**
    - **Priority:** Must have for seasonal availability updates; Could have for broader product information edits
    - **Acceptance criteria:** A producer can update their own product’s availability dates, with invalid date ranges rejected and availability reassessed after saving. If broader information edits are implemented, changed details undergo the applicable validation and certification checks before appearing on the marketplace.
-4. **Allow the marketplace to automatically update the available season**
+
+5. **Allow the marketplace to automatically update the available season**
    - **Priority:** Must have
    - **Acceptance criteria:** The system automatically reassesses whether a product is within the producer’s recorded availability period when that period starts or ends, without requiring the producer to manually change its availability status.
-5. **Automatically make the product unavailable for out-of-date stock, zero-quantity stock and out-of-season stock**
+
+6. **Automatically make the product unavailable for out-of-date stock, zero-quantity stock and out-of-season stock**
    - **Priority:** Must have for zero-stock and seasonal rules; Could have for expiry-based withdrawal
    - **Acceptance criteria:** A product cannot be ordered when its quantity is zero or the current date is outside its availability period. If expiry-based withdrawal is implemented, stock past its recorded best-before date is also made unavailable under the agreed project rule.
-6. **Allow products that are in season and in stock to become automatically available to the marketplace**
+
+7. **Allow products that are in season and in stock to become automatically available to the marketplace**
    - **Priority:** Must have
    - **Acceptance criteria:** An already validated and published product automatically becomes available for new orders when its quantity is positive and it is within its availability period. Replenishment outside that period does not restore availability; any implemented expiry restriction must also be satisfied.
-7. **Update the product’s marketplace availability**
+
+8. **Update the product’s marketplace availability**
    - **Priority:** Must have
    - **Acceptance criteria:** Changes determined by the stock and seasonal rules are reflected in the customer-facing listing and whether new orders are permitted, without requiring a new product submission. This item applies the availability decisions from items 4–6 rather than defining a separate publication process.
 
