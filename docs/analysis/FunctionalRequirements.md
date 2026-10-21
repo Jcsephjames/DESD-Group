@@ -29,6 +29,9 @@ Both chosen functionalities are drawn from **Use Case 1: Producer Product Listin
 7. **Publish to marketplace**
    - **Priority:** Must have
    - **Acceptance criteria:** A product becomes visible to customers only after mandatory information and any claimed organic certification pass validation. Its availability for new orders follows the stock and seasonal availability rules in Functionality 2.
+8. **Marketplace product database** 
+    - **Priority:** Must have
+    - **Acceptance criteria:** An SQL database owned by the marketplace allows producers to add to it  
 
 **Key elements:**
 
