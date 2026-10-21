@@ -5,6 +5,25 @@ Both chosen functionalities are drawn from **Use Case 1: Producer Product Listin
 ## 1. Chosen Functionality 1: Product Submission, Validation and Publication
 **Scope:** End-to-end process from submission of a new product by a registered producer through validation, verification of any claimed organic certification, and publication to customers.
 
+** Product Backlog **
+
+
+1. Create a product form
+
+2. Validate and Standardize product details
+
+3. Give Producer the option to update failed product details 
+
+4. Verify Claimed certificates
+
+5. Handle Failed certiciates 
+
+6. Publish to marketplace
+
+
+
+
+
 **Key elements:**
 - Capture of mandatory product information: product name, description, category, price, available quantity, availability period and farm origin.
 - Capture of relevant additional information, such as harvest date, allergen details, organic certification and best-before date.
@@ -16,8 +35,29 @@ Both chosen functionalities are drawn from **Use Case 1: Producer Product Listin
 **Why chosen:**
 This functionality combines producer interaction through forms, automated validation, external service integration and alternative paths. It maps directly to the new-product listing portion of Use Case 1 and provides a distinct operational BPMN process suitable for Camunda user tasks, service tasks, gateways and error handling.
 
-## 2. Chosen Functionality 2: Inventory and Seasonal Availability Management
+## 2. Chosen Functionality 2: Product and Seasonal Availability Management
 **Scope:** Management of an existing product’s quantity and seasonal availability, including automatic changes to whether the product is available for new orders.
+
+** Product Backlog **
+
+
+1. Allow producers to update stock quantities 
+
+2. Allow producers to create an ASAN (advanced shipping notice)
+
+3. Allow producers to update product information and seasonal availability
+
+4. Allow the marketplace to update the available season
+
+5. Automatically make the product unavailable for out of date stock or zero quantity stock
+
+6. Allow products that are in season and stock to become automatically available to the marketplace 
+
+7. Publish to marketplace
+
+
+
+
 
 **Key elements:**
 - Allow the producer to update an existing product’s available quantity.
