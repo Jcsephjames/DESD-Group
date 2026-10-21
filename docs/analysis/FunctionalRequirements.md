@@ -1,40 +1,42 @@
 # Functional Scope – Chosen Major Functionalities
 
-## 1. Chosen Functionality 1: Producer Product Listing and Inventory Management
-**Scope:** End-to-end process from product submission by a registered producer through validation, optional organic certification check, publication, and ongoing inventory/seasonal management.
+Both chosen functionalities are drawn from **Use Case 1: Producer Product Listing and Inventory Management**. They divide the use case into two distinct processes: publishing a new product and managing an existing product’s inventory and seasonal availability.
+
+## 1. Chosen Functionality 1: Product Submission, Validation and Publication
+**Scope:** End-to-end process from submission of a new product by a registered producer through validation, verification of any claimed organic certification, and publication to customers.
 
 **Key elements:**
-- Capture of mandatory and optional product data (name, description, category, price, quantity, availability period, farm origin, harvest date, allergens, organic certification, best-before).
-- Validation of mandatory fields; return to producer for correction if invalid.
-- External (or simulated) organic verification service call when claimed; handling of success, failure, and service unavailability.
-- Publication and customer visibility once validated.
-- Subsequent updates to quantity and seasonal availability.
-- Automatic transition to unavailable when stock reaches zero; re-availability when stock is replenished and the product remains within its seasonal window.
-- Clear exception paths.
+- Capture of mandatory product information: product name, description, category, price, available quantity, availability period and farm origin.
+- Capture of relevant additional information, such as harvest date, allergen details, organic certification and best-before date.
+- Validation of mandatory information; request corrections from the producer if information is missing or invalid.
+- Verification of any claimed organic certification using an external or simulated verification service.
+- Exception paths for failed verification and verification service unavailability.
+- Publication and customer visibility once all required information has been successfully validated.
 
-**Why chosen:**  
-This functionality is substantial, contains rich user interaction (forms), automated business rules (stock and seasonality), external service interaction, and multiple exception paths. It maps directly to Use Case 1, provides excellent material for operational BPMN and Camunda user tasks/forms/service tasks, and demonstrates inventory integrity—core to marketplace trust. It offers strong opportunities to show process variables, gateways, and error handling, supporting high marks in later sprints.
+**Why chosen:**
+This functionality combines producer interaction through forms, automated validation, external service integration and alternative paths. It maps directly to the new-product listing portion of Use Case 1 and provides a distinct operational BPMN process suitable for Camunda user tasks, service tasks, gateways and error handling.
 
-## 2. Chosen Functionality 2: Customer Multi-Vendor Order, Checkout and Payment
-**Scope:** End-to-end process from a customer basket containing products from one or more producers through stock validation, order decomposition, commission calculation, payment, inventory update, and producer notification.
+## 2. Chosen Functionality 2: Inventory and Seasonal Availability Management
+**Scope:** Management of an existing product’s quantity and seasonal availability, including automatic changes to whether the product is available for new orders.
 
 **Key elements:**
-- Stock and availability check at checkout; amendment path if insufficient.
-- Identification of involved producers and delivery/collection arrangements.
-- Creation of marketplace order and producer-specific order elements.
-- Calculation of amount due to each producer and the marketplace’s 5% commission.
-- Submission to simulated payment service; success path (confirm, update inventory, notify producers), decline path (inform customer, allow retry), and temporary unavailability path (appropriate retry/exception rather than abrupt termination).
+- Allow the producer to update an existing product’s available quantity.
+- Allow the producer to update the product’s seasonal availability period.
+- Automatically make the product unavailable for new orders when stock reaches zero.
+- Allow the product to become available again when stock is replenished and it remains within its seasonal availability period.
+- Keep the product unavailable if stock is replenished but it is outside its seasonal availability period.
 
-**Why chosen:**  
-This functionality demonstrates multi-party coordination, business calculations, external service integration, and alternative/exception flows. Combined with Functionality 1 it covers the core commercial loop of the marketplace. It is highly suitable for Camunda (user tasks for review/confirmation, service tasks for payment and inventory, gateways for outcomes) and shows clear traceability from strategic processes to executable automation.
+**Why chosen:**
+This functionality combines producer updates with automated stock and seasonal availability rules. It maps directly to the ongoing inventory management portion of Use Case 1 and provides a separate operational BPMN process with user tasks, automated decisions and alternative paths. It demonstrates how the marketplace maintains accurate product availability after publication.
 
-Together the two functionalities provide complementary end-to-end processes that are sufficiently complex for a first-class demonstration while remaining achievable within the sprint structure. They were discussed and agreed as the focus for detailed development.
+Together, these functionalities cover Use Case 1 with clear boundaries. Functionality 1 ends when a validated product is published; Functionality 2 handles subsequent inventory and seasonal availability management. Initial quantity and availability information is captured during submission, while later updates and availability decisions belong to Functionality 2.
 
-## 3. Alternatives Functionalties
-**Food Quality Incident and Customer Traceability (Use Case 3)**  
-Strong for demonstrating traceability, notifications, and escalation. However, it is more reactive and incident-driven. It offers fewer opportunities for routine user-driven forms and commercial business rules compared with the listing and order processes. It remains a valuable supporting process that can be referenced in the strategic model and potentially extended in Task 2.
+## 3. Scope Exclusions
+**Customer Multi-Vendor Order, Checkout and Payment (Use Case 2)**
+This is outside the chosen use case and is therefore excluded from the two selected functionalities. Checkout, order decomposition, payment processing and commission calculation are not part of the selected functional scope.
 
-**Standalone Producer Onboarding / Registration**  
-Useful but relatively linear and less rich in business decisions, external service interaction, and exception complexity than the two chosen functionalities. Onboarding can be assumed or lightly modelled at strategic level.
+**Food Quality Incident and Customer Traceability (Use Case 3)**
+This is also outside the chosen use case and is excluded from the two selected functionalities.
 
-
+**Standalone Producer Onboarding / Registration**
+Use Case 1 starts with a registered producer. Producer registration is therefore treated as a precondition rather than a selected functionality.
