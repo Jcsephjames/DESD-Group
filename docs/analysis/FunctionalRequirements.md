@@ -88,14 +88,3 @@ This functionality combines producer interaction through forms, automated valida
 This functionality combines producer updates with automated stock and seasonal availability rules. It maps directly to the ongoing inventory management portion of Use Case 1 and provides a separate operational BPMN process with user tasks, automated decisions and alternative paths. It demonstrates how the marketplace maintains accurate product availability after publication.
 
 Together, these functionalities cover Use Case 1 with clear boundaries. Functionality 1 ends when a validated product is published; Functionality 2 handles subsequent inventory and seasonal availability management. Initial quantity and availability information is captured during submission, while later updates and availability decisions belong to Functionality 2.
-
-## 3. Scope Exclusions
-
-**Customer Multi-Vendor Order, Checkout and Payment (Use Case 2)**
-This is outside the chosen use case and is therefore excluded from the two selected functionalities. Checkout, order decomposition, payment processing and commission calculation are not part of the selected functional scope.
-
-**Food Quality Incident and Customer Traceability (Use Case 3)**
-This is also outside the chosen use case and is excluded from the two selected functionalities.
-
-**Standalone Producer Onboarding / Registration**
-Use Case 1 starts with a registered producer. Producer registration is therefore treated as a precondition rather than a selected functionality.
