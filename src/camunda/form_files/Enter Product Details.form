@@ -1,0 +1,309 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.10.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "aa92d9c"
+  },
+  "schemaVersion": 19,
+  "id": "Prod-sub-form",
+  "components": [
+    {
+      "text": "### Product Submission Form",
+      "id": "Heading_title",
+      "type": "text",
+      "layout": {
+        "row": "row_1",
+        "col": 16
+      }
+    },
+    {
+      "id": "ValidationErrors",
+      "type": "text",
+      "text": "{{validationErrorSummary}}",
+      "layout": {
+        "row": "validation_errors",
+        "col": 16
+      }
+    },
+    {
+      "text": "##### Producer & Reference Details",
+      "id": "Subheading_producer",
+      "type": "text",
+      "layout": {
+        "row": "row_2",
+        "col": 16
+      }
+    },
+    {
+      "label": "Producer ID",
+      "id": "ProducerId",
+      "key": "producerId",
+      "type": "number",
+      "decimalDigits": 0,
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_3",
+        "col": 8
+      }
+    },
+    {
+      "label": "Submission Key",
+      "id": "SubmissionKey",
+      "key": "submissionKey",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_3",
+        "col": 8
+      }
+    },
+    {
+      "text": "##### Product Information",
+      "id": "Subheading_product",
+      "type": "text",
+      "layout": {
+        "row": "row_4",
+        "col": 16
+      }
+    },
+    {
+      "label": "Product Name",
+      "id": "ProductName",
+      "key": "productName",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_5",
+        "col": 8
+      }
+    },
+    {
+      "label": "Category",
+      "values": [
+        {
+          "label": "Fruits",
+          "value": "fruits"
+        },
+        {
+          "label": "Vegetables",
+          "value": "vegetables"
+        },
+        {
+          "label": "Dairy",
+          "value": "dairy"
+        },
+        {
+          "label": "Grains",
+          "value": "grains"
+        },
+        {
+          "label": "Meat",
+          "value": "meat"
+        }
+      ],
+      "id": "Category",
+      "key": "category",
+      "type": "select",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_5",
+        "col": 8
+      }
+    },
+    {
+      "label": "Farm Origin",
+      "id": "FarmOrigin",
+      "key": "farmOrigin",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_6",
+        "col": 8
+      }
+    },
+    {
+      "label": "Price",
+      "id": "Price",
+      "key": "price",
+      "type": "number",
+      "decimalDigits": 2,
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_6",
+        "col": 4
+      }
+    },
+    {
+      "label": "Quantity",
+      "id": "Quantity",
+      "key": "quantity",
+      "type": "number",
+      "decimalDigits": 0,
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_6",
+        "col": 4
+      }
+    },
+    {
+      "label": "Description",
+      "id": "Description",
+      "key": "description",
+      "type": "textarea",
+      "layout": {
+        "row": "row_7",
+        "col": 16
+      }
+    },
+    {
+      "text": "##### Timeline & Availability",
+      "id": "Subheading_dates",
+      "type": "text",
+      "layout": {
+        "row": "row_8",
+        "col": 16
+      }
+    },
+    {
+      "subtype": "date",
+      "id": "AvailabilityStartDate",
+      "key": "availabilityStartDate",
+      "type": "datetime",
+      "dateLabel": "Availability Start Date",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_9",
+        "col": 16
+      }
+    },
+    {
+      "subtype": "date",
+      "id": "AvailabilityEndDate",
+      "key": "availabilityEndDate",
+      "type": "datetime",
+      "dateLabel": "Availability End Date",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_10",
+        "col": 16
+      }
+    },
+    {
+      "subtype": "date",
+      "id": "HarvestDate",
+      "key": "harvestDate",
+      "type": "datetime",
+      "dateLabel": "Harvest Date (Optional)",
+      "layout": {
+        "row": "row_11",
+        "col": 16
+      }
+    },
+    {
+      "subtype": "date",
+      "id": "BestBeforeDate",
+      "key": "bestBeforeDate",
+      "type": "datetime",
+      "dateLabel": "Best Before Date (Optional)",
+      "layout": {
+        "row": "row_12",
+        "col": 16
+      }
+    },
+    {
+      "text": "##### Compliance, Certification & Status",
+      "id": "Subheading_compliance",
+      "type": "text",
+      "layout": {
+        "row": "row_13",
+        "col": 16
+      }
+    },
+    {
+      "label": "Organic Status",
+      "id": "OrganicStatus",
+      "key": "organicStatus",
+      "type": "checkbox",
+      "defaultValue": false,
+      "layout": {
+        "row": "row_14",
+        "col": 16
+      }
+    },
+    {
+      "label": "Certificate ID",
+      "id": "CertificateId",
+      "key": "certificateId",
+      "type": "textfield",
+      "description": "Required if Organic is True",
+      "layout": {
+        "row": "row_15",
+        "col": 8
+      }
+    },
+    {
+      "label": "Certification Status",
+      "values": [
+        {
+          "label": "Pending",
+          "value": "pending"
+        },
+        {
+          "label": "Certified",
+          "value": "certified"
+        },
+        {
+          "label": "Not Applicable",
+          "value": "not_applicable"
+        }
+      ],
+      "id": "CertificationStatus",
+      "key": "certificationStatus",
+      "type": "select",
+      "layout": {
+        "row": "row_15",
+        "col": 8
+      }
+    },
+    {
+      "label": "Allergens (Optional)",
+      "id": "Allergens",
+      "key": "allergens",
+      "type": "textfield",
+      "layout": {
+        "row": "row_16",
+        "col": 8
+      }
+    },
+    {
+      "label": "Submit Product Info",
+      "action": "submit",
+      "id": "SubmitButton",
+      "type": "button",
+      "layout": {
+        "row": "row_17",
+        "col": 16
+      }
+    }
+  ],
+  "type": "default"
+}

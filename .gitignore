@@ -1,0 +1,9 @@
+personalnotes
+.local-tools/
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/*.db
+data/*.db-*

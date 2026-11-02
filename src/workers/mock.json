@@ -1,0 +1,15 @@
+{
+    "name": "  Organic Carrots  ",
+    "description": "  Fresh carrots grown locally in Bristol.  ",
+    "category": "Vegetables",
+    "farm_origin": "  Bristol  ",
+    "price": "2.5",
+    "quantity": "20",
+    "availability_start": "01/10/2026",
+    "availability_end": "31/12/2026",
+    "harvest_date": "29/10/2026",
+    "best_before_date": "10/11/2026",
+    "organic": true,
+    "certificate_id": "  CERT-123  ",
+    "allergens": "None"
+  }

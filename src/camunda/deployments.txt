@@ -1,0 +1,2 @@
+# Deploy the operational F1 version; the strategic model is a reference only.
+bpmn_files/New Product Submission, Validation and Publication (f1) (1).bpmn
