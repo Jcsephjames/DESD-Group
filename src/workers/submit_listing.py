@@ -37,8 +37,6 @@ def submit_listing(job, base_url, *, send=post):
     """
     variables = dict(job["variables"])
     correction = variables.get("isCorrection") is True
-    if correction and job.get("customHeaders", {}).get("correctionLoop") != "enabled":
-        raise ValueError("This older BPMN version has no correction form. Start a new submission using the latest process version.")
     if correction:
         variables["submissionKey"] = variables["originalSubmissionKey"]
     submission_key = variables.get("submissionKey")

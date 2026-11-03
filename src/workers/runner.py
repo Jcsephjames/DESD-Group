@@ -5,28 +5,13 @@ import os
 import time
 
 from submit_listing import post, submit_listing
-from validate_product import validate_product
+from validate_listing import validate_listing
 from request_corrections import request_corrections
 
 LOGGER = logging.getLogger(__name__)
-FORM_FIELDS = {
-    'productName': 'name', 'description': 'description', 'category': 'category',
-    'farmOrigin': 'farm_origin', 'price': 'price', 'quantity': 'quantity',
-    'availabilityStartDate': 'availability_start', 'availabilityEndDate': 'availability_end',
-    'harvestDate': 'harvest_date', 'bestBeforeDate': 'best_before_date',
-    'organicStatus': 'organic', 'certificateId': 'certificate_id', 'allergens': 'allergens',
-}
 
 
-def validate_listing(job, base_url, *, send=post):
-    values = job['variables']
-    product = {target: values[source] for source, target in FORM_FIELDS.items() if source in values}
-    result = validate_product(product)
-    # Invalid input is a completed business check, not a failed technical job.
-    send(base_url, f"jobs/{job['jobKey']}/completion", {'variables': result})
-    LOGGER.info('Validated job %s: detailsValid=%s', job['jobKey'], result['detailsValid'])
-
-
+# Job types here must match the taskDefinition types in the BPMN.
 HANDLERS = {'submit-listing': submit_listing, 'validate-product': validate_listing,
             'request-corrections': request_corrections}
 
@@ -36,6 +21,7 @@ def run(base_url):
         found = False
         for job_type, handler in HANDLERS.items():
             try:
+                # Request one job at a time so its handler finishes before polling again.
                 response = post(base_url, 'jobs/activation', {
                     'type': job_type, 'worker': 'marketplace-workers',
                     'timeout': 120000, 'maxJobsToActivate': 1, 'requestTimeout': -1,

@@ -5,10 +5,13 @@ import sys
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 import uuid
+import xml.etree.ElementTree as ET
 
 
 def deploy():
+    # Compose mounts src/camunda at /resources inside the deployment container.
     root = Path('/resources')
+    # The manifest selects executable diagrams; strategic diagrams are excluded.
     paths = [root / line.strip() for line in (root / 'deployments.txt').read_text().splitlines()
              if line.strip() and not line.lstrip().startswith('#')]
     paths.extend(sorted((root / 'form_files').rglob('*.form')))
@@ -16,7 +19,7 @@ def deploy():
     if not paths:
         raise ValueError('No resources selected in deployments.txt.')
     forms = {json.loads(p.read_text())['id'] for p in paths if p.suffix == '.form'}
-    import xml.etree.ElementTree as ET
+    # Check form IDs locally before sending the files to Camunda.
     for path in paths:
         if path.suffix == '.bpmn':
             tree = ET.parse(path)
@@ -24,6 +27,8 @@ def deploy():
                 form_id = form.get('formId')
                 if form_id and not form_id.startswith('=') and form_id not in forms:
                     raise ValueError(f'{path.name} requires form {form_id!r}. Export its .form file into form_files first.')
+    # Multipart uploads separate each file with a unique boundary string.
+    # This is the HTTP upload format required by Camunda, not BPMN logic.
     boundary = uuid.uuid4().hex
     body = bytearray()
     for path in paths:
@@ -32,6 +37,8 @@ def deploy():
         body.extend(path.read_bytes())
         body.extend(b'\r\n')
     body.extend(f'--{boundary}--\r\n'.encode())
+    # Upload the BPMN and forms together. This deploys definitions; it does not
+    # start process instances. Camunda rejects the whole upload if a file is invalid.
     request = Request('http://camunda:8080/v2/deployments', data=bytes(body),
                       headers={'Content-Type': f'multipart/form-data; boundary={boundary}'})
     with urlopen(request, timeout=90) as response:

@@ -1,5 +1,8 @@
+# Compose options: https://docs.docker.com/reference/compose-file/services/
+# Camunda baseline: https://docs.camunda.io/docs/8.8/self-managed/quickstart/developer-quickstart/docker-compose/
 # Development services. The backend currently runs an idle container.
 services:
+  # One-off uploader: wait for Camunda, deploy the files, then exit.
   camunda-deploy:
     image: python:3.13-slim
     command: ["python", "-B", "/resources/deploy.py"]
@@ -14,15 +17,19 @@ services:
     image: camunda/camunda:8.8.44
     environment:
       JAVA_TOOL_OPTIONS: "-Xms512m -Xmx512m"
+    # Host port 8088 forwards to port 8080 inside Camunda.
     ports:
       - "127.0.0.1:8088:8080"
       - "127.0.0.1:26500:26500"
     volumes:
       - camunda_data:/usr/local/camunda/data
+      # Compose starts the container; this file configures Camunda inside it.
       - ./src/camunda/application.yaml:/usr/local/camunda/config/application.yaml:ro
     depends_on:
       elasticsearch:
         condition: service_healthy
+    # Ask the management endpoint for HTTP 200 before allowing deployment.
+    # Bash is used because the Camunda image does not require curl for this check.
     healthcheck:
       test:
         - CMD-SHELL
@@ -118,6 +125,7 @@ services:
     volumes:
       - ./src/workers:/app
 
+# Named volumes keep workflow and database data after container replacement.
 volumes:
   camunda_data:
   elasticsearch_data:

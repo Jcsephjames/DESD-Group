@@ -1,9 +1,11 @@
 # Adapted from Camunda's official lightweight 8.8 Docker Compose configuration.
 # https://github.com/camunda/camunda-distributions/tree/80ebf43/docker-compose/versions/camunda-8.8
+# Loaded by the camunda service through its Compose volume mount.
 camunda:
   system:
     cpu-thread-count: 3
     io-thread-count: 3
+  # Local development login. API authentication and authorization are disabled.
   security:
     authentication:
       method: basic
@@ -18,6 +20,7 @@ camunda:
           email: demo@example.test
       defaultRoles.admin.users:
         - demo
+  # There is one Elasticsearch node, so no replica node is available.
   database.index.numberOfReplicas: 0
   data:
     secondary-storage:
