@@ -1,0 +1,70 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "aa92d9c"
+  },
+  "schemaVersion": 19,
+  "id": "producer-login",
+  "components": [
+    {
+      "text": "### Account Login",
+      "type": "text",
+      "id": "Heading_login",
+      "layout": {
+        "row": "row_1",
+        "col": 16
+      }
+    },
+    {
+      "label": "Username or Email Address",
+      "type": "textfield",
+      "id": "Field_username",
+      "key": "username",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_2",
+        "col": 8
+      }
+    },
+    {
+      "label": "Password",
+      "type": "textfield",
+      "id": "Field_password",
+      "key": "password",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "row_2",
+        "col": 8
+      }
+    },
+    {
+      "label": "Remember Me",
+      "type": "checkbox",
+      "id": "Field_remember_me",
+      "key": "rememberMe",
+      "defaultValue": false,
+      "layout": {
+        "row": "row_3",
+        "col": 16
+      }
+    },
+    {
+      "label": "Log In",
+      "action": "submit",
+      "type": "button",
+      "id": "Button_login",
+      "layout": {
+        "row": "row_4",
+        "col": 16
+      }
+    }
+  ],
+  "generated": true,
+  "type": "default"
+}
