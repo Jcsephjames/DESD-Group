@@ -1,8 +1,9 @@
-# Compose options: https://docs.docker.com/reference/compose-file/services/
-# Camunda baseline: https://docs.camunda.io/docs/8.8/self-managed/quickstart/developer-quickstart/docker-compose/
-# Development services. The backend currently runs an idle container.
+# To launch the docker containes use `docker compose up -d`
+# Service definitions go under services; named storage is declared at the bottom in the volumes section.
+# Backend and worker startup commands are currently placeholders.
 services:
   # One-off uploader: wait for Camunda, deploy the files, then exit.
+  # This is used to deploy the BPMN and Forms to Camunda.
   camunda-deploy:
     image: python:3.13-slim
     command: ["python", "-B", "/resources/deploy.py"]
@@ -13,6 +14,8 @@ services:
         condition: service_healthy
     restart: "no"
 
+  # Runs the process engine, Tasklist and Operate.
+  # Tasklist: http://localhost:8088/tasklist (development login: demo / demo). For Operate use http://localhost:8088/operate (development login: demo / demo).
   camunda:
     image: camunda/camunda:8.8.44
     environment:
@@ -22,6 +25,7 @@ services:
       - "127.0.0.1:8088:8080"
       - "127.0.0.1:26500:26500"
     volumes:
+      # Attach the named storage declared in the bottom-level volumes section.
       - camunda_data:/usr/local/camunda/data
       # Compose starts the container; this file configures Camunda inside it.
       - ./src/camunda/application.yaml:/usr/local/camunda/config/application.yaml:ro
@@ -42,6 +46,7 @@ services:
       retries: 30
       start_period: 60s
 
+  # Camunda secondary storage; reachable internally at elasticsearch:9200.
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.10
     environment:
@@ -61,6 +66,8 @@ services:
       retries: 30
       start_period: 30s
 
+  # Stores marketplace data separately from Camunda process data.
+  # This is for Marketplace database. Not currently used.
   database:
     image: postgres:17-alpine
     environment:
@@ -74,6 +81,7 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Executed only when Postgres initializes an empty data volume.
       - ./src/database/init/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U marketplace -d marketplace"]
@@ -81,6 +89,7 @@ services:
       timeout: 5s
       retries: 10
 
+  # Serves the local frontend files at http://localhost:8080. Maybe needed if we are creating a frontend / website
   frontend:
     image: nginx:stable-alpine
     ports:
@@ -91,26 +100,29 @@ services:
   backend:
     image: python:3.13-slim
     working_dir: /app
-    # No backend application is implemented yet.
+    # Replace with the API startup command once the backend exists.
     command: ["sleep", "infinity"]
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
     ports:
-      # Reserved API port; no application currently listens here.
+      # Reserved for the future API; nothing listens here yet.
       - "127.0.0.1:8000:8000"
     volumes:
       - ./src/backend:/app
 
+  # Worker container; its current command keeps it idle until handlers are started.
+  # This is used to process the messages from the Camunda process engine.
+  # There is no kind of web socket to camunda it connects via Camunda's internal network (http://camunda:8080/v2)
   workers:
     build:
       context: ./src/workers
     working_dir: /app
-    command: ["python", "runner.py"]
+    # Replace with the worker startup command once the workers exist.
+    command: ["sleep", "infinity"]
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
-      CAMUNDA_REST_URL: http://camunda:8080/v2
       PGHOST: database
       PGPORT: "5432"
       PGDATABASE: marketplace
@@ -118,16 +130,14 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:-marketplace_dev}
       PGTZ: Europe/London
     depends_on:
-      camunda:
-        condition: service_healthy
       database:
         condition: service_healthy
     volumes:
       - ./src/workers:/app
 
-# Named volumes keep workflow and database data after container replacement.
+# Declare named storage here; each service mounts it in its own volumes section.
+# Data survives docker compose down; docker compose down -v deletes it.
 volumes:
   camunda_data:
   elasticsearch_data:
   postgres_data:
-

@@ -1,22 +1,35 @@
 """Run the supported Camunda job handlers in one workers container."""
 
+# This file is used to run the supported Camunda job handlers
+# We give a list of Jobs we have defined in Camunda
+# The runner cycles through these jobs asking Camunda on its interal network whether job_type = one of them
+# If it does then it that relevant handler is called.
+
 import logging
 import os
 import time
 
+# We must import all handlers that are going to be used in the Camunda
 from submit_listing import post, submit_listing
 from validate_listing import validate_listing
 from request_corrections import request_corrections
 
 LOGGER = logging.getLogger(__name__)
 
-
-# Job types here must match the taskDefinition types in the BPMN.
+# Job types here must match the Job Types in the Camunda Graphs and Task Definitions in the .BPMN file
+# These handlers are more often than not a Service Task in the Camunda Graphs.
+# They will be a python script that is called by the runner.
+# These Python scripts will be in the src/workers directory.
 HANDLERS = {'submit-listing': submit_listing, 'validate-product': validate_listing,
             'request-corrections': request_corrections}
 
 
 def run(base_url):
+    """Poll Camunda for the job types in HANDLERS and run the matching handler.
+
+    Each pass requests one waiting job per type from http://camunda:8080/v2.
+    An empty pass waits one second before asking again.
+    """
     while True:
         found = False
         for job_type, handler in HANDLERS.items():
