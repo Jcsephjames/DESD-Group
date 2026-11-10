@@ -1,6 +1,6 @@
 # To launch the docker containes use `docker compose up -d`
 # Service definitions go under services; named storage is declared at the bottom in the volumes section.
-# Backend and worker startup commands are currently placeholders.
+# The backend startup command is currently a placeholder.
 services:
   # One-off uploader: wait for Camunda, deploy the files, then exit.
   # This is used to deploy the BPMN and Forms to Camunda.
@@ -16,6 +16,7 @@ services:
 
   # Runs the process engine, Tasklist and Operate.
   # Tasklist: http://localhost:8088/tasklist (development login: demo / demo). For Operate use http://localhost:8088/operate (development login: demo / demo).
+  # I Took the docker compose from Camunda documentation (https://docs.camunda.org/manual/latest/getting-started/installation/deploy-with-docker/)
   camunda:
     image: camunda/camunda:8.8.44
     environment:
@@ -111,18 +112,23 @@ services:
     volumes:
       - ./src/backend:/app
 
-  # Worker container; its current command keeps it idle until handlers are started.
+  certification:
+    image: python:3.13-slim
+    command: ["python", "-B", "/app/server.py"]
+    volumes:
+      - ./src/certification:/app:ro
+
+  # The workers image starts runner.py.
   # This is used to process the messages from the Camunda process engine.
   # There is no kind of web socket to camunda it connects via Camunda's internal network (http://camunda:8080/v2)
   workers:
     build:
       context: ./src/workers
     working_dir: /app
-    # Replace with the worker startup command once the workers exist.
-    command: ["sleep", "infinity"]
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
+      CERTIFICATION_SERVICE_URL: ${CERTIFICATION_SERVICE_URL:-http://certification:8000/verify}
       PGHOST: database
       PGPORT: "5432"
       PGDATABASE: marketplace
@@ -130,6 +136,10 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:-marketplace_dev}
       PGTZ: Europe/London
     depends_on:
+      camunda:
+        condition: service_healthy
+      certification:
+        condition: service_started
       database:
         condition: service_healthy
     volumes:

@@ -38,6 +38,7 @@
     </bpmn:startEvent>
     <bpmn:eventBasedGateway id="Gateway_1jud8zl">
       <bpmn:incoming>Flow_11hsk1y</bpmn:incoming>
+      <bpmn:incoming>Flow_AwaitVerificationResult</bpmn:incoming>
       <bpmn:outgoing>Flow_1g0kdwo</bpmn:outgoing>
       <bpmn:outgoing>Flow_0fp1ssa</bpmn:outgoing>
       <bpmn:outgoing>Flow_0zpn01v</bpmn:outgoing>
@@ -62,6 +63,7 @@
     </bpmn:intermediateCatchEvent>
     <bpmn:intermediateCatchEvent id="Event_0r1b764" name="Verification Pending">
       <bpmn:incoming>Flow_0zpn01v</bpmn:incoming>
+      <bpmn:outgoing>Flow_AwaitVerificationResult</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_066poug" messageRef="Message_VerificationPending" />
     </bpmn:intermediateCatchEvent>
     <bpmn:endEvent id="Event_0gsznui" name="Listing Published Indication">
@@ -91,6 +93,7 @@
     <bpmn:sequenceFlow id="Flow_1g0kdwo" sourceRef="Gateway_1jud8zl" targetRef="Event_1loc0ty" />
     <bpmn:sequenceFlow id="Flow_0fp1ssa" sourceRef="Gateway_1jud8zl" targetRef="Event_1fi3nat" />
     <bpmn:sequenceFlow id="Flow_0zpn01v" sourceRef="Gateway_1jud8zl" targetRef="Event_0r1b764" />
+    <bpmn:sequenceFlow id="Flow_AwaitVerificationResult" sourceRef="Event_0r1b764" targetRef="Gateway_1jud8zl" />
     <bpmn:sequenceFlow id="Flow_16kxjoz" sourceRef="Event_1loc0ty" targetRef="Activity_0jgmt46" />
     <bpmn:sequenceFlow id="Flow_0kgt2dd" sourceRef="Activity_0jgmt46" targetRef="Activity_1cmufq7" />
     <bpmn:sequenceFlow id="Flow_018vy3g" sourceRef="Event_1fi3nat" targetRef="Event_0gsznui" />
@@ -156,7 +159,7 @@
       <bpmn:incoming>Flow_1381i7n</bpmn:incoming>
       <bpmn:outgoing>Flow_038nzr2</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_17gefh8" name="Mark Pending and Notify Producer">
+    <bpmn:serviceTask id="Activity_17gefh8" name="Mark Verification Pending">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="mark-pending" retries="3" />
       </bpmn:extensionElements>
@@ -274,6 +277,14 @@
         <di:waypoint x="790" y="265" />
         <di:waypoint x="790" y="320" />
         <di:waypoint x="872" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AwaitVerificationResult_di" bpmnElement="Flow_AwaitVerificationResult">
+        <di:waypoint x="908" y="320" />
+        <di:waypoint x="938" y="320" />
+        <di:waypoint x="938" y="394" />
+        <di:waypoint x="830" y="394" />
+        <di:waypoint x="830" y="252" />
+        <di:waypoint x="803" y="252" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16kxjoz_di" bpmnElement="Flow_16kxjoz">
         <di:waypoint x="908" y="160" />

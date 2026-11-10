@@ -127,6 +127,8 @@ def validate_product(product):
         errors["price"] = "Price cannot be NaN or infinity."
     elif price < 0:
         errors["price"] = "Price cannot be negative."
+    elif price > Decimal("99999999.99"):
+        errors["price"] = "Price must be at most 99999999.99."
     else:
         try:
             if price != price.quantize(Decimal("0.01")):
@@ -145,6 +147,8 @@ def validate_product(product):
         errors["quantity"] = "Quantity cannot be NaN or infinity."
     elif quantity < 0:
         errors["quantity"] = "Quantity cannot be negative."
+    elif quantity > 2147483647:
+        errors["quantity"] = "Quantity must be at most 2147483647."
     elif quantity != quantity.to_integral_value():
         errors["quantity"] = "Quantity must be a whole number; fractional units are not allowed."
 

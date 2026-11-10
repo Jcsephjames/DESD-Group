@@ -10,11 +10,8 @@ Worker workflows:
 - [Submission](docs/submit_listing.md)
 - [Validation adapter](docs/validate_listing.md)
 - [Correction requests](docs/request_corrections.md)
-- [Certificate verification helper](docs/verification.md)
-- [Product publication helper](docs/publish_product.md)
-
-The first three are connected. Verification and publication helpers are not yet
-registered in the runner, so valid submissions wait at those BPMN tasks.
+- [Certificate verification](docs/verification.md)
+- [Product publication](docs/publish_product.md)
 
 From the repository root:
 
@@ -35,6 +32,4 @@ For a standalone validation check:
 docker compose exec workers python validate_product.py mock.json
 ```
 
-Use a unique submissionKey for each new listing. Corrections keep the original
-key and resume the existing marketplace instance. Process versions already running
-retain their deployed definitions; start a new instance after BPMN changes.
+After a BPMN change, redeploy and start a fresh instance to test that version.

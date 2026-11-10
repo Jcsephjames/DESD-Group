@@ -78,7 +78,15 @@ Workers use Europe/London for the connection timezone and seasonal dates.
 The view shows published, in-season products, including zero-stock listings with
 `available_for_orders = false`. Best-before withdrawal is not implemented.
 
-The existing `publish_product.py` still needs producer ID, submission key,
-publication/certificate-state handling and duplicate handling to match this schema.
-The workers image installs its own Python dependencies and starts runner.py.
-The backend application is not implemented yet.
+## Demo producer for F1
+
+For our local demo, run this from the repo root and use the ID it prints in the F1 form.
+
+```sh
+docker compose exec -T database psql -U marketplace -d marketplace <<'SQL'
+INSERT INTO producers (name, email, farm_name)
+VALUES ('Demo Producer', 'desd-demo@example.invalid', 'Demo Farm')
+ON CONFLICT (email) DO UPDATE SET email = EXCLUDED.email
+RETURNING id;
+SQL
+```

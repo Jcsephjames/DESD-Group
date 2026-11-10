@@ -1,11 +1,5 @@
-publish_product.py
+# Publish product
 
-Job type: Not registered in the runner yet; the BPMN expects publish-product.
-
-Workflow: Successful validation/certification -> Save and Publish Product.
-
-The helper inserts product fields using a caller-provided SQL connection and commits or rolls back. It still needs alignment with the required schema fields, retry-safe persistence and a listing-published message. It is not a complete publication worker yet.
-
-The shared runner owns polling and technical failure handling. Only handlers in
-runner.py HANDLERS are active. Do not start a second standalone polling process
-when demonstrating the shared runner.
+In F1, we use `publish-product` to save the approved listing and send
+`listing-published` back to the producer process. For organic listings, we save
+the successful certificate check alongside the product.

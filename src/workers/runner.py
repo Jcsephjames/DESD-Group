@@ -13,6 +13,8 @@ import time
 from submit_listing import post, submit_listing
 from validate_listing import validate_listing
 from request_corrections import request_corrections
+from publish_product import publish_listing
+from verification import mark_pending, notify_verification_unavailable, verify_certificate
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,8 +22,15 @@ LOGGER = logging.getLogger(__name__)
 # These handlers are more often than not a Service Task in the Camunda Graphs.
 # They will be a python script that is called by the runner.
 # These Python scripts will be in the src/workers directory.
-HANDLERS = {'submit-listing': submit_listing, 'validate-product': validate_listing,
-            'request-corrections': request_corrections}
+HANDLERS = {
+    'submit-listing': submit_listing,
+    'validate-product': validate_listing,
+    'request-corrections': request_corrections,
+    'verify-certificate': verify_certificate,
+    'mark-pending': mark_pending,
+    'notify-verification-unavailable': notify_verification_unavailable,
+    'publish-product': publish_listing,
+}
 
 
 def run(base_url):

@@ -51,9 +51,11 @@ changed files explicitly:
 docker compose run --rm camunda-deploy
 ```
 
-Tasklist will have no product-entry task until deployment succeeds and an instance
-is started. This setup does not automatically start process instances. The submit-listing worker is connected. Marketplace validation and subsequent
-worker handlers are not yet connected. Target Camunda 8.8.
+## Run F1
+
+1. In Tasklist, open **Processes** and start **New Product Submission, Validation and Publication (f1)**.
+2. Fill in **Enter Product Details** with a [demo producer ID](../database/README.md#demo-producer-for-f1) and a new submission key.
+3. If **Correct Product Details** comes up, fix the fields it flags and resubmit with the same key.
 
 ## Stop and inspect
 

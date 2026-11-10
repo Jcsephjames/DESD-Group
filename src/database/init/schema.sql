@@ -53,14 +53,6 @@ CREATE TABLE certificate_checks (
     checked_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE TABLE producers (
-    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name text NOT NULL CHECK (btrim(name) <> ''),
-    email text NOT NULL UNIQUE,
-    farm_name text NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT now()
-);
-
 CREATE INDEX certificate_checks_product_idx ON certificate_checks(product_id);
 
 -- Query this view for the customer listing: zero stock stays visible; out of season does not.
