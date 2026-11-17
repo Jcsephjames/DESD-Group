@@ -12,6 +12,8 @@ import time
 # We must import all handlers that are going to be used in the Camunda
 from shared.camunda import post
 from f1.submit_listing import submit_listing
+from f2.fetch_product_names import fetch_product_names
+from f2.update_product_stock import update_product_stock
 from f1.validate_listing import validate_listing
 from f1.request_corrections import request_corrections
 from f1.publish_product import publish_listing
@@ -24,6 +26,8 @@ LOGGER = logging.getLogger(__name__)
 # They will be a python script that is called by the runner.
 # These Python scripts will be in the src/workers directory.
 HANDLERS = {
+    'fetch-product-names': fetch_product_names,
+    'update-product-stock': update_product_stock,
     'submit-listing': submit_listing,
     'validate-product': validate_listing,
     'request-corrections': request_corrections,

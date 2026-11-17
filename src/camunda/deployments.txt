@@ -1,2 +1,5 @@
 # Deploy the operational F1 version; the strategic model is a reference only.
 bpmn_files/New Product Submission, Validation and Publication (f1) (1).bpmn
+bpmn_files/F2 Update Product Stock.bpmn
+# Detailed F2 model for stock and seasonal availability.
+# bpmn_files/Product and Seasonal Availability Management (f2).bpmn

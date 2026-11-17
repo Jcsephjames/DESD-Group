@@ -1,0 +1,36 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "schemaVersion": 19,
+  "id": "f2-stock-update",
+  "type": "default",
+  "components": [
+    {
+      "id": "StockUpdateError",
+      "type": "text",
+      "text": "{{stockUpdateError}}"
+    },
+    {
+      "id": "productId",
+      "key": "productId",
+      "label": "Published product",
+      "type": "select",
+      "valuesExpression": "=productOptions",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "quantity",
+      "key": "quantity",
+      "label": "New stock quantity",
+      "type": "number",
+      "decimalDigits": 0,
+      "validate": {
+        "required": true,
+        "min": 0,
+        "max": 2147483647
+      }
+    }
+  ]
+}

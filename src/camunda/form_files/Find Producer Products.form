@@ -1,0 +1,26 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "schemaVersion": 19,
+  "id": "f2-find-products",
+  "type": "default",
+  "components": [
+    {
+      "id": "ProductLookupError",
+      "type": "text",
+      "text": "{{productLookupError}}"
+    },
+    {
+      "id": "producerId",
+      "key": "producerId",
+      "label": "Producer ID",
+      "type": "number",
+      "decimalDigits": 0,
+      "validate": {
+        "required": true,
+        "min": 1,
+        "max": 9007199254740991
+      }
+    }
+  ]
+}

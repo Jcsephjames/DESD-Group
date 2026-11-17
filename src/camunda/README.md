@@ -35,8 +35,8 @@ The frontend keeps its separate port 8080.
 
 The `camunda-deploy` service waits for Camunda to be healthy, then uploads the BPMN
 files listed in `deployments.txt` and every `.form` file under `form_files` (or `bpmn_files`) in one
-atomic request. The current selection is the newer F1 model. The strategic
-model is excluded deliberately; add further executable models to the list when ready.
+atomic request. The deployment includes F1 and the initial F2 stock workflow. The strategic BPMN and
+the detailed F2 design diagram are kept as references.
 
 Export Camunda forms from Web Modeler into `form_files`. Form IDs must match
 the references in BPMN. Deployment stops with an explanation if a referenced form
@@ -56,6 +56,17 @@ docker compose run --rm camunda-deploy
 1. In Tasklist, open **Processes** and start **New Product Submission, Validation and Publication (f1)**.
 2. Fill in **Enter Product Details** with a [demo producer ID](../database/README.md#demo-producer-for-f1) and a new submission key.
 3. If **Correct Product Details** comes up, fix the fields it flags and resubmit with the same key.
+
+## Run F2 stock lookup
+
+1. In Tasklist, open **Processes** and start **Update Product Stock (F2)**.
+2. Enter the producer ID used to publish a product in F1. If there are no published
+   listings for that ID, the process returns to the producer ID form.
+3. Select a product from the resulting dropdown and enter a new quantity. The
+   lookup includes published listings across all stock levels and seasons.
+
+The producer ID is a demo input. A production workflow would obtain it from the
+signed-in producer's identity.
 
 ## Stop and inspect
 

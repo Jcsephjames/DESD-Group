@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+  id="Definitions_F2Stock" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="F2_UpdateProductStock" name="Update Product Stock (F2)" isExecutable="true">
+    <bpmn:startEvent id="Start_Stock">
+      <bpmn:outgoing>Flow_Enter</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_IdentifyProducer" name="Enter producer ID">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="f2-find-products" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Enter</bpmn:incoming>
+      <bpmn:incoming>Flow_NoProducts</bpmn:incoming>
+      <bpmn:outgoing>Flow_FetchNames</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_FetchNames" name="Fetch Product Names">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="fetch-product-names" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_FetchNames</bpmn:incoming>
+      <bpmn:outgoing>Flow_CheckNames</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_HasProducts" name="Products found?" default="Flow_NoProducts">
+      <bpmn:incoming>Flow_CheckNames</bpmn:incoming>
+      <bpmn:outgoing>Flow_NoProducts</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SelectProduct</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_EnterStock" name="Select product and enter stock">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="f2-stock-update" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_SelectProduct</bpmn:incoming>
+      <bpmn:incoming>Flow_Correct</bpmn:incoming>
+      <bpmn:outgoing>Flow_Update</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_UpdateStock" name="Validate and update stock">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="update-product-stock" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Update</bpmn:incoming>
+      <bpmn:outgoing>Flow_Check</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_StockUpdated" name="Stock updated?" default="Flow_Correct">
+      <bpmn:incoming>Flow_Check</bpmn:incoming>
+      <bpmn:outgoing>Flow_Correct</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Done</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_Stock" name="Stock updated">
+      <bpmn:incoming>Flow_Done</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Enter" sourceRef="Start_Stock" targetRef="Task_IdentifyProducer" />
+    <bpmn:sequenceFlow id="Flow_FetchNames" sourceRef="Task_IdentifyProducer" targetRef="Task_FetchNames" />
+    <bpmn:sequenceFlow id="Flow_CheckNames" sourceRef="Task_FetchNames" targetRef="Gateway_HasProducts" />
+    <bpmn:sequenceFlow id="Flow_NoProducts" name="No" sourceRef="Gateway_HasProducts" targetRef="Task_IdentifyProducer" />
+    <bpmn:sequenceFlow id="Flow_SelectProduct" name="Yes" sourceRef="Gateway_HasProducts" targetRef="Task_EnterStock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=hasPublishedProducts</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Update" sourceRef="Task_EnterStock" targetRef="Task_UpdateStock" />
+    <bpmn:sequenceFlow id="Flow_Check" sourceRef="Task_UpdateStock" targetRef="Gateway_StockUpdated" />
+    <bpmn:sequenceFlow id="Flow_Correct" name="No" sourceRef="Gateway_StockUpdated" targetRef="Task_EnterStock" />
+    <bpmn:sequenceFlow id="Flow_Done" name="Yes" sourceRef="Gateway_StockUpdated" targetRef="End_Stock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=stockUpdated</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_F2Stock">
+    <bpmndi:BPMNPlane id="Plane_F2Stock" bpmnElement="F2_UpdateProductStock">
+      <bpmndi:BPMNShape id="Shape_Start" bpmnElement="Start_Stock">
+        <dc:Bounds x="100" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Producer" bpmnElement="Task_IdentifyProducer">
+        <dc:Bounds x="190" y="80" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_FetchNames" bpmnElement="Task_FetchNames">
+        <dc:Bounds x="370" y="80" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_HasProducts" bpmnElement="Gateway_HasProducts" isMarkerVisible="true">
+        <dc:Bounds x="550" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="530" y="68" width="90" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Enter" bpmnElement="Task_EnterStock">
+        <dc:Bounds x="670" y="80" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Update" bpmnElement="Task_UpdateStock">
+        <dc:Bounds x="850" y="80" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway" bpmnElement="Gateway_StockUpdated" isMarkerVisible="true">
+        <dc:Bounds x="1030" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1013" y="68" width="84" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End" bpmnElement="End_Stock">
+        <dc:Bounds x="1145" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1120" y="146" width="86" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Enter" bpmnElement="Flow_Enter">
+        <di:waypoint x="136" y="120" /><di:waypoint x="190" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_FetchNames" bpmnElement="Flow_FetchNames">
+        <di:waypoint x="310" y="120" /><di:waypoint x="370" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CheckNames" bpmnElement="Flow_CheckNames">
+        <di:waypoint x="490" y="120" /><di:waypoint x="550" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_NoProducts" bpmnElement="Flow_NoProducts">
+        <di:waypoint x="575" y="145" /><di:waypoint x="575" y="215" />
+        <di:waypoint x="250" y="215" /><di:waypoint x="250" y="160" />
+        <bpmndi:BPMNLabel><dc:Bounds x="413" y="195" width="20" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SelectProduct" bpmnElement="Flow_SelectProduct">
+        <di:waypoint x="600" y="120" /><di:waypoint x="670" y="120" />
+        <bpmndi:BPMNLabel><dc:Bounds x="621" y="100" width="25" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Update" bpmnElement="Flow_Update">
+        <di:waypoint x="790" y="120" /><di:waypoint x="850" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Check" bpmnElement="Flow_Check">
+        <di:waypoint x="970" y="120" /><di:waypoint x="1030" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Correct" bpmnElement="Flow_Correct">
+        <di:waypoint x="1055" y="145" /><di:waypoint x="1055" y="215" />
+        <di:waypoint x="730" y="215" /><di:waypoint x="730" y="160" />
+        <bpmndi:BPMNLabel><dc:Bounds x="893" y="195" width="20" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Done" bpmnElement="Flow_Done">
+        <di:waypoint x="1080" y="120" /><di:waypoint x="1145" y="120" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1100" y="100" width="25" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
