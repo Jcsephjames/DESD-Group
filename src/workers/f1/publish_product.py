@@ -5,7 +5,7 @@ from decimal import Decimal
 
 import psycopg
 
-from submit_listing import post
+from shared.camunda import post
 
 PRODUCT_FIELDS = (
     "name", "description", "category", "farm_origin", "price", "quantity",

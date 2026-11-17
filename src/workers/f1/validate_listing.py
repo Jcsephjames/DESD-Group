@@ -4,8 +4,8 @@ import logging
 
 import psycopg
 
-from submit_listing import post
-from validate_product import validate_product
+from shared.camunda import post
+from f1.validate_product import validate_product
 
 LOGGER = logging.getLogger(__name__)
 FORM_FIELDS = {

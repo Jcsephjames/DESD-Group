@@ -10,11 +10,12 @@ import os
 import time
 
 # We must import all handlers that are going to be used in the Camunda
-from submit_listing import post, submit_listing
-from validate_listing import validate_listing
-from request_corrections import request_corrections
-from publish_product import publish_listing
-from verification import mark_pending, notify_verification_unavailable, verify_certificate
+from shared.camunda import post
+from f1.submit_listing import submit_listing
+from f1.validate_listing import validate_listing
+from f1.request_corrections import request_corrections
+from f1.publish_product import publish_listing
+from f1.verification import mark_pending, notify_verification_unavailable, verify_certificate
 
 LOGGER = logging.getLogger(__name__)
 

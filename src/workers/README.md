@@ -2,7 +2,7 @@
 
 One container starts `python runner.py`. The runner polls Camunda, selects the
 handler by job type, and reports technical failures with a reduced retry count.
-Each handler is in its own Python file. Validation rules stay in validate_product.py;
+F1 handlers live in `f1/`, F2 handlers in `f2/`, and the Camunda HTTP client in `shared/`. Validation rules stay in validate_product.py;
 validate_listing.py is the adapter between those rules and Camunda jobs.
 
 Worker workflows:
@@ -29,7 +29,7 @@ PGUSER and PGPASSWORD. Inside a container, localhost means that same container.
 For a standalone validation check:
 
 ```sh
-docker compose exec workers python validate_product.py mock.json
+docker compose exec workers python -m f1.validate_product mock.json
 ```
 
 After a BPMN change, redeploy and start a fresh instance to test that version.

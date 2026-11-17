@@ -9,7 +9,7 @@ import sys
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
-from submit_listing import post
+from shared.camunda import post
 
 
 def verification(certificate_id, service_url, timeout=10, *, query_id=None):

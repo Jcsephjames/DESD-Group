@@ -1,5 +1,5 @@
 """Notify the waiting producer process that its submission needs correction."""
-from submit_listing import post
+from shared.camunda import post
 
 
 def request_corrections(job, base_url, *, send=post):
